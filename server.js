@@ -1,8 +1,11 @@
+import cors from "cors";
 import express from "express";
 
 import db from "./db.js";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -20,7 +23,7 @@ app.get("/questions/:questionId/answers", (req, res) => {
       } else {
         res.json(rows);
       }
-    }
+    },
   );
 });
 
@@ -55,7 +58,7 @@ app.post("/questions/:questionId/answers", (req, res) => {
           }
         });
       }
-    }
+    },
   );
 });
 
@@ -181,7 +184,7 @@ app.post("/questions", (req, res) => {
             res.status(500).json({ error: "Internal server error" });
           });
       }
-    }
+    },
   );
 });
 
@@ -206,7 +209,7 @@ app.post("/questions/:questionId/save", (req, res) => {
         } else {
           res.status(200).json({ message: "Question removed from saves." });
         }
-      }
+      },
     );
   } else {
     // Save the question
@@ -222,7 +225,7 @@ app.post("/questions/:questionId/save", (req, res) => {
         } else {
           res.status(200).json({ message: "Question saved." });
         }
-      }
+      },
     );
   }
 });
@@ -366,7 +369,7 @@ app.put("/users/:userId", (req, res) => {
           res.sendStatus(204);
         }
       }
-    }
+    },
   );
 });
 
@@ -431,13 +434,13 @@ app.post("/users/:userId/filters", (req, res) => {
                     // Return the ID of the newly created filter
                     res.json({ id: this.lastID });
                   }
-                }
+                },
               );
             }
-          }
+          },
         );
       }
-    }
+    },
   );
 });
 
@@ -464,7 +467,7 @@ app.delete("/users/:userId/filters/:filterId", (req, res) => {
           res.sendStatus(204);
         }
       }
-    }
+    },
   );
 });
 
@@ -492,7 +495,7 @@ app.put("/users/:userId/filters/:filterId", (req, res) => {
           res.sendStatus(204);
         }
       }
-    }
+    },
   );
 });
 
@@ -543,10 +546,10 @@ app.post("/users/:userId/lists", (req, res) => {
             }
 
             res.json({ message: "New list created." });
-          }
+          },
         );
       }
-    }
+    },
   );
 });
 
@@ -570,7 +573,7 @@ app.get("/users/:userId/lists/:listId", (req, res) => {
       } else {
         res.json(row);
       }
-    }
+    },
   );
 });
 
@@ -613,10 +616,10 @@ app.delete("/users/:userId/lists/:listId", (req, res) => {
                 message: `${listName} has been deleted from your lists.`,
               });
             }
-          }
+          },
         );
       }
-    }
+    },
   );
 });
 
@@ -657,10 +660,10 @@ app.put("/users/:userId/lists/:listId", (req, res) => {
             } else {
               res.json({ message: `${newListName} updated.` });
             }
-          }
+          },
         );
       }
-    }
+    },
   );
 });
 
@@ -685,7 +688,7 @@ app.get("/users/:userId/preferences", (req, res) => {
       } else {
         res.status(404).send("User preferences not found");
       }
-    }
+    },
   );
 });
 
@@ -711,7 +714,7 @@ app.put("/users/:userId/preferences", (req, res) => {
           res.sendStatus(204);
         }
       }
-    }
+    },
   );
 });
 
@@ -749,7 +752,7 @@ app.get("/users/:userId/savedQuestions", (req, res) => {
         }));
         res.status(200).json(savedQuestions);
       }
-    }
+    },
   );
 });
 
@@ -768,7 +771,7 @@ app.get("/users/:userId/watchedTags", (req, res) => {
 
       const watchedTags = rows.map((row) => row.tagId);
       res.json(watchedTags);
-    }
+    },
   );
 });
 
@@ -786,7 +789,7 @@ app.put("/users/:userId/watchedTags", (req, res) => {
 
     // Insert new watched tags for the user
     const insertWatchedTags = db.prepare(
-      `INSERT INTO watched_tags (tagId, userId) VALUES (?, ?)`
+      `INSERT INTO watched_tags (tagId, userId) VALUES (?, ?)`,
     );
 
     watchedTags.forEach((tagId) => {
