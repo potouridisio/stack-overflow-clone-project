@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { getQuestions, getTags } from "./utils";
+import { getQuestions, getTags, getUsers } from "./utils";
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [tags, setTags] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     getQuestions().then(setQuestions);
     getTags().then((data) => setTags(data.tags));
+    getUsers().then(setUsers);
   }, []);
 
   return (
