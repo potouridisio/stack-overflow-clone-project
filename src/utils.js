@@ -9,3 +9,8 @@ export async function getTags() {
   const response = await fetch(`${baseURL}/tags`);
   return await response.json();
 }
+
+export async function getUsers() {
+  const response = await fetch(`${baseURL}/users`);
+  return await response.json();
+}

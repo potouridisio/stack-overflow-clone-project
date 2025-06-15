@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { getQuestions, getTags } from "./utils";
+import { getQuestions, getTags, getUsers } from "./utils";
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [tags, setTags] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     getQuestions().then(setQuestions);
     getTags().then((data) => setTags(data.tags));
+    getUsers().then(setUsers);
   }, []);
 
   return (
@@ -42,6 +44,19 @@ function App() {
                   <div className="inline-flex h-6 items-center rounded bg-gray-100 px-1 font-bold text-gray-900 hover:bg-gray-300">
                     {tag.name}
                   </div>
+                );
+              })}
+            </ul>
+            <ul className="flex flex-row-reverse gap-1">
+              {users.map((user) => {
+                return (
+                  <a
+                    className="text-blue-500 hover:text-blue-700"
+                    href="#"
+                    key={user.id}
+                  >
+                    {question.userId === user.id ? user.name : null}
+                  </a>
                 );
               })}
             </ul>
