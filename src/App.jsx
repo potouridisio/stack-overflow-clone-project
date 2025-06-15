@@ -47,6 +47,19 @@ function App() {
                 );
               })}
             </ul>
+            <ul className="flex flex-row-reverse gap-1">
+              {users.map((user) => {
+                return (
+                  <a
+                    className="text-blue-500 hover:text-blue-700"
+                    href="#"
+                    key={user.id}
+                  >
+                    {question.userId === user.id ? user.name : null}
+                  </a>
+                );
+              })}
+            </ul>
           </div>
         </div>
       ))}
