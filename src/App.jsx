@@ -7,8 +7,10 @@ function App() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    getQuestions().then(setQuestions);
-    getTags().then((data) => setTags(data.tags));
+    Promise.all([getQuestions(), getTags()]).then(([questions, { tags }]) => {
+      setQuestions(questions);
+      setTags(tags);
+    });
   }, []);
 
   return (
