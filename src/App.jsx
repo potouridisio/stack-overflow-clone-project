@@ -19,29 +19,40 @@ function App() {
             <ul className="flex flex-col items-end gap-2 py-1 text-sm">
               <li>{question.voteCount} votes</li>
               <li>
-                {/* TODO: 0 answers -> No chip */}
-                <div className="inline-flex h-6 items-center rounded border border-green-700 px-1 text-green-700">
-                  {question.answerCount} answer
-                  {question.answerCount === 1 ? "" : "s"}
-                </div>
+                {question.answerCount > 0 ? (
+                  <div className="inline-flex h-6 items-center rounded border border-green-700 text-green-700">
+                    <span className="px-1">
+                      {question.answerCount} answer
+                      {question.answerCount === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="text-gray-500">0 answers</div>
+                )}
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-1 text-xl">
-              <a className="text-blue-500 hover:text-blue-700" href="#">
-                {question.title}
-              </a>
-            </h3>
-            <p className="mb-2 text-gray-700">{question.body}</p>
-            <ul className="flex gap-2">
+            <a
+              className="mb-1 block text-xl text-blue-500 hover:text-blue-700"
+              href="#"
+            >
+              {question.title}
+            </a>
+            <p className="mb-2 line-clamp-2 text-gray-700">{question.body}</p>
+            <ul className="flex items-center gap-2">
               {question.tagIds.map((tagId) => {
                 const tag = tags.find((t) => t.id === tagId);
 
                 return (
-                  <div className="inline-flex h-6 items-center rounded bg-gray-100 px-1 font-bold text-gray-900 hover:bg-gray-300">
-                    {tag.name}
-                  </div>
+                  <li className="inline-flex" key={tagId}>
+                    <a
+                      className="inline-flex h-5 items-center rounded bg-gray-100 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                      href="#"
+                    >
+                      <span className="px-1"> {tag.name}</span>
+                    </a>
+                  </li>
                 );
               })}
             </ul>
