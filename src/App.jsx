@@ -7,10 +7,17 @@ function App() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    Promise.all([getQuestions(), getTags()]).then(([questions, { tags }]) => {
+    const startFetching = async () => {
+      const [questions, { tags }] = await Promise.all([
+        getQuestions(),
+        getTags(),
+      ]);
+
       setQuestions(questions);
-      setTags(tags);
-    });
+      setTags(tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}));
+    };
+
+    startFetching();
   }, []);
 
   return (
@@ -43,20 +50,16 @@ function App() {
             </a>
             <p className="mb-2 line-clamp-2 text-gray-700">{question.body}</p>
             <ul className="flex items-center gap-2">
-              {question.tagIds.map((tagId) => {
-                const tag = tags.find((t) => t.id === tagId);
-
-                return (
-                  <li className="inline-flex" key={tagId}>
-                    <a
-                      className="inline-flex h-5 items-center rounded bg-gray-100 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                      href="#"
-                    >
-                      <span className="px-1"> {tag.name}</span>
-                    </a>
-                  </li>
-                );
-              })}
+              {question.tagIds.map((tagId) => (
+                <li className="inline-flex" key={tagId}>
+                  <a
+                    className="inline-flex h-5 items-center rounded bg-gray-100 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                    href="#"
+                  >
+                    <span className="px-1"> {tags[tagId].name}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
