@@ -1,104 +1,53 @@
-import { useEffect, useState } from "react";
+import { NavLink, Routes, Route } from "react-router";
 
-import { getQuestions, getTags } from "./utils";
+import Home from "./routes/Home";
+import Tags from "./routes/Tags";
 
 function App() {
-  const [questions, setQuestions] = useState([]);
-  const [tags, setTags] = useState([]);
-
-  useEffect(() => {
-    const startFetching = async () => {
-      const [questions, { tags }] = await Promise.all([
-        getQuestions(),
-        getTags(),
-      ]);
-
-      setQuestions(questions);
-      setTags(tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}));
-    };
-
-    startFetching();
-  }, []);
-
   return (
     <div className="mx-auto flex max-w-7xl">
       <aside className="h-screen w-40 flex-none border-r border-r-gray-300 py-6">
         <nav className="sticky top-0">
           <ul>
-            <li className="relative">
-              <a
-                className="flex items-center rounded-l-lg bg-gray-100 p-2 text-sm font-bold text-gray-900"
-                href="#"
+            <li>
+              <NavLink
+                className={({ isActive }) =>
+                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
+                }
+                to="/"
               >
                 Home
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a
-                className="flex items-center rounded-l-lg p-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                href="#"
+              <NavLink
+                className={({ isActive }) =>
+                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
+                }
+                to="/questions"
               >
                 Questions
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a
-                className="flex items-center rounded-l-lg p-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                href="#"
+              <NavLink
+                className={({ isActive }) =>
+                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
+                }
+                to="/tags"
               >
                 Tags
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>
       </aside>
       <main className="p-6">
-        <div className="divide-y divide-gray-300 rounded border border-gray-300">
-          {questions.map((question) => (
-            <div className="flex gap-4 p-4" key={question.id}>
-              <div className="w-32 flex-none">
-                <ul className="flex flex-col items-end gap-2 py-1 text-sm">
-                  <li>{question.voteCount} votes</li>
-                  <li>
-                    {question.answerCount > 0 ? (
-                      <div className="inline-flex h-6 items-center rounded border border-green-700 text-green-700">
-                        <span className="px-1">
-                          {question.answerCount} answer
-                          {question.answerCount === 1 ? "" : "s"}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="text-gray-500">0 answers</div>
-                    )}
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <a
-                  className="mb-1 block text-xl text-blue-500 hover:text-blue-700"
-                  href="#"
-                >
-                  {question.title}
-                </a>
-                <p className="mb-2 line-clamp-2 text-gray-700">
-                  {question.body}
-                </p>
-                <ul className="flex items-center gap-2">
-                  {question.tagIds.map((tagId) => (
-                    <li className="inline-flex" key={tagId}>
-                      <a
-                        className="inline-flex h-5 items-center rounded bg-gray-100 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                        href="#"
-                      >
-                        <span className="px-1"> {tags[tagId].name}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="questions" element={<Home />} />
+          <Route path="tags" element={<Tags />} />
+        </Routes>
       </main>
     </div>
   );
