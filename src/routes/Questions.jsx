@@ -32,9 +32,15 @@ export default function Home() {
         </a>
       </div>
       <div className="mb-4 flex items-center">
-        <p className="text-lg text-gray-900">
+        <p className="grow text-lg text-gray-900">
           {questions.length} question{questions.length === 1 ? "" : "s"}
         </p>
+        <button
+          className="rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer hover:bg-blue-100"
+          type="button"
+        >
+          Filter
+        </button>
       </div>
       <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
         {questions.map((question) => (
