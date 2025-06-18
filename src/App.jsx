@@ -14,6 +14,7 @@ function App() {
                 className={({ isActive }) =>
                   `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
                 }
+                end
                 to="/"
               >
                 Home
@@ -34,6 +35,7 @@ function App() {
                 className={({ isActive }) =>
                   `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
                 }
+                end
                 to="/tags"
               >
                 Tags
