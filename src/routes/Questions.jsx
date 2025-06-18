@@ -39,7 +39,7 @@ export default function Home() {
                 <li>{question.voteCount} votes</li>
                 <li>
                   {question.answerCount > 0 ? (
-                    <div className="inline-flex h-6 items-center rounded border border-green-700 px-2 text-xs font-medium text-green-700">
+                    <div className="inline-flex h-6 items-center rounded border border-green-700 px-2 text-xs text-green-700">
                       {question.answerCount} answer
                       {question.answerCount === 1 ? "" : "s"}
                     </div>
