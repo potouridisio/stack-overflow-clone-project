@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="mx-auto flex max-w-7xl">
       <aside className="h-screen w-40 flex-none border-r border-r-gray-300 py-6">
-        <nav className="sticky top-0">
+        <nav>
           <ul>
             <li>
               <NavLink
