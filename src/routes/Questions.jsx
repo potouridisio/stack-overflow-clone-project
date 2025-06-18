@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getQuestions, getTags } from "../utils";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -36,7 +37,8 @@ export default function Home() {
           {questions.length} question{questions.length === 1 ? "" : "s"}
         </p>
         <button
-          className="rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer hover:bg-blue-100"
+          className={`rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer ${isOpen ? "bg-blue-300" : "hover:bg-blue-100"}`}
+          onClick={() => setIsOpen(!isOpen)}
           type="button"
         >
           Filter
