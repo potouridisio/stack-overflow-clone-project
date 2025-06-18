@@ -1,6 +1,6 @@
 import { NavLink, Routes, Route } from "react-router";
 
-import Home from "./routes/Home";
+import Questions from "./routes/Questions";
 import Tags from "./routes/Tags";
 
 function App() {
@@ -44,8 +44,8 @@ function App() {
       </aside>
       <main className="p-6">
         <Routes>
-          <Route index element={<Home />} />
-          <Route path="questions" element={<Home />} />
+          <Route index element={<Questions />} />
+          <Route path="questions" element={<Questions />} />
           <Route path="tags" element={<Tags />} />
         </Routes>
       </main>
