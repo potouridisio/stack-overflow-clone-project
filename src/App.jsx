@@ -6,41 +6,26 @@ import Tags from "./routes/Tags";
 function App() {
   return (
     <div className="mx-auto flex max-w-7xl">
-      <aside className="h-screen w-40 flex-none border-r border-r-gray-300 py-6">
+      <aside className="w-40 flex-none border-r border-r-gray-300 py-6">
         <nav>
           <ul>
-            <li>
-              <NavLink
-                className={({ isActive }) =>
-                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
-                }
-                end
-                to="/"
-              >
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={({ isActive }) =>
-                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
-                }
-                to="/questions"
-              >
-                Questions
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={({ isActive }) =>
-                  `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
-                }
-                end
-                to="/tags"
-              >
-                Tags
-              </NavLink>
-            </li>
+            {[
+              ["Home", "/"],
+              ["Questions", "/questions"],
+              ["Tags", "/tags"],
+            ].map(([title, url]) => (
+              <li key={url}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `flex items-center rounded-l-lg p-2 text-sm ${isActive ? "bg-gray-100 font-bold text-gray-900" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"}`
+                  }
+                  end
+                  to={url}
+                >
+                  {title}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </nav>
       </aside>
