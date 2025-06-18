@@ -17,8 +17,8 @@ export default function Tags() {
 
   return (
     <>
-      <h1 className="mb-4 grow text-3xl">Tags</h1>
-      <p className="mb-4 max-w-2xl">
+      <h1 className="mb-4 grow text-3xl text-gray-900">Tags</h1>
+      <p className="mb-4 max-w-2xl text-gray-900">
         A tag is a keyword or label that categorizes your question with other,
         similar questions. Using the right tags makes it easier for others to
         find and answer your question.

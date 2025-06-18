@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <>
       <div className="mb-4 flex items-center">
-        <h1 className="grow text-3xl">Newest Questions</h1>
+        <h1 className="grow text-3xl text-gray-900">Newest Questions</h1>
         <a
           className="rounded bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-700"
           href="#"
@@ -31,11 +31,16 @@ export default function Home() {
           Ask Question
         </a>
       </div>
+      <div className="mb-4 flex items-center">
+        <p className="text-lg text-gray-900">
+          {questions.length} question{questions.length === 1 ? "" : "s"}
+        </p>
+      </div>
       <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
         {questions.map((question) => (
           <div className="flex gap-4 p-4" key={question.id}>
             <div className="w-32 flex-none">
-              <ul className="flex flex-col items-end gap-2 py-1 text-sm">
+              <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                 <li>{question.voteCount} votes</li>
                 <li>
                   {question.answerCount > 0 ? (
