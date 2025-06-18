@@ -25,7 +25,7 @@ export default function Home() {
       <div className="mb-4 flex items-center">
         <h1 className="grow text-3xl text-gray-900">Newest Questions</h1>
         <a
-          className="rounded bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-700"
+          className="rounded bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
           href="#"
         >
           Ask Question
