@@ -29,13 +29,11 @@ function App() {
           </ul>
         </nav>
       </aside>
-      <main className="p-6">
-        <Routes>
-          <Route index element={<Questions />} />
-          <Route path="questions" element={<Questions />} />
-          <Route path="tags" element={<Tags />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route index element={<Questions />} />
+        <Route path="questions" element={<Questions />} />
+        <Route path="tags" element={<Tags />} />
+      </Routes>
     </div>
   );
 }

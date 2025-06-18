@@ -21,9 +21,9 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-      <div className="mb-4 flex items-center">
-        <h1 className="grow text-3xl text-gray-900">Newest Questions</h1>
+    <main className="grow py-6">
+      <div className="mb-4 flex items-center justify-between pl-6">
+        <h1 className="text-3xl text-gray-900">Newest Questions</h1>
         <a
           className="rounded bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
           href="#"
@@ -31,8 +31,8 @@ export default function Home() {
           Ask Question
         </a>
       </div>
-      <div className="mb-4 flex items-center">
-        <p className="grow text-lg text-gray-900">
+      <div className="mb-4 flex items-center justify-between pl-6">
+        <p className="text-lg text-gray-900">
           {questions.length} question{questions.length === 1 ? "" : "s"}
         </p>
         <button
@@ -42,7 +42,7 @@ export default function Home() {
           Filter
         </button>
       </div>
-      <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
+      <div className="divide-y divide-gray-300 border-y border-gray-300">
         {questions.map((question) => (
           <div className="flex gap-4 p-4" key={question.id}>
             <div className="w-32 flex-none">
@@ -84,6 +84,6 @@ export default function Home() {
           </div>
         ))}
       </div>
-    </>
+    </main>
   );
 }
