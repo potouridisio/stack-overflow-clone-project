@@ -29,11 +29,9 @@ export default function Home() {
               <li>{question.voteCount} votes</li>
               <li>
                 {question.answerCount > 0 ? (
-                  <div className="inline-flex h-6 items-center rounded border border-green-700 text-green-700">
-                    <span className="px-1">
-                      {question.answerCount} answer
-                      {question.answerCount === 1 ? "" : "s"}
-                    </span>
+                  <div className="inline-flex h-6 items-center rounded border border-green-700 px-2 text-xs font-medium text-green-700">
+                    {question.answerCount} answer
+                    {question.answerCount === 1 ? "" : "s"}
                   </div>
                 ) : (
                   <div className="text-gray-500">0 answers</div>
@@ -53,10 +51,10 @@ export default function Home() {
               {question.tagIds.map((tagId) => (
                 <li className="inline-flex" key={tagId}>
                   <a
-                    className="inline-flex h-5 items-center rounded bg-gray-100 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                    className="inline-flex h-6 items-center rounded bg-gray-100 px-2 text-xs font-medium text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                     href="#"
                   >
-                    <span className="px-1"> {tags[tagId].name}</span>
+                    {tags[tagId].name}
                   </a>
                 </li>
               ))}
