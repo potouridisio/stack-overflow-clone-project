@@ -25,13 +25,13 @@ export default function Home() {
       <div className="mb-4 flex items-center">
         <h1 className="grow text-3xl">Newest Questions</h1>
         <a
-          className="rounded bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-700"
           href="#"
         >
           Ask Question
         </a>
       </div>
-      <div className="divide-y divide-gray-300 rounded border border-gray-300">
+      <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
         {questions.map((question) => (
           <div className="flex gap-4 p-4" key={question.id}>
             <div className="w-32 flex-none">
@@ -39,7 +39,7 @@ export default function Home() {
                 <li>{question.voteCount} votes</li>
                 <li>
                   {question.answerCount > 0 ? (
-                    <div className="inline-flex h-6 items-center rounded border border-green-700 px-2 text-xs text-green-700">
+                    <div className="inline-flex h-6 items-center rounded border border-green-700 px-1.5 text-xs text-green-700">
                       {question.answerCount} answer
                       {question.answerCount === 1 ? "" : "s"}
                     </div>
@@ -61,7 +61,7 @@ export default function Home() {
                 {question.tagIds.map((tagId) => (
                   <li className="inline-flex" key={tagId}>
                     <a
-                      className="inline-flex h-6 items-center rounded bg-gray-100 px-2 text-xs font-medium text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                      className="inline-flex h-6 items-center rounded bg-gray-100 px-1.5 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                       href="#"
                     >
                       {tags[tagId].name}
