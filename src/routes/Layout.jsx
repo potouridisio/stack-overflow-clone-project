@@ -1,9 +1,6 @@
-import { NavLink, Routes, Route } from "react-router";
+import { NavLink, Outlet } from "react-router";
 
-import Questions from "./routes/Questions";
-import Tags from "./routes/Tags";
-
-function App() {
+export default function Layout() {
   return (
     <div className="mx-auto flex max-w-7xl">
       <aside className="w-40 flex-none border-r border-r-gray-300 py-6">
@@ -28,13 +25,7 @@ function App() {
           </ul>
         </nav>
       </aside>
-      <Routes>
-        <Route index element={<Questions />} />
-        <Route path="questions" element={<Questions />} />
-        <Route path="tags" element={<Tags />} />
-      </Routes>
+      <Outlet />
     </div>
   );
 }
-
-export default App;

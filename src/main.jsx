@@ -1,12 +1,20 @@
 import "./index.css";
 
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router";
 
-import App from "./App.jsx";
+import Layout from "./routes/Layout";
+import Questions from "./routes/Questions";
+import Tags from "./routes/Tags";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <App />
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Questions />} />
+        <Route path="questions" element={<Questions />} />
+        <Route path="tags" element={<Tags />} />
+      </Route>
+    </Routes>
   </BrowserRouter>,
 );
