@@ -1,22 +1,31 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 
 import WatchedTags from "../components/WatchedTags";
-import { getQuestions, getTags } from "../utils";
+import { getQuestions, getTags, getUsers } from "../utils";
+
+dayjs.extend(relativeTime);
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState({});
+  const [users, setUsers] = useState({});
 
   useEffect(() => {
     const startFetching = async () => {
-      const [questions, { tags }] = await Promise.all([
+      const [questions, { tags }, users] = await Promise.all([
         getQuestions(),
         getTags(),
+        getUsers(),
       ]);
 
       setQuestions(questions);
       setTags(tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}));
+      setUsers(
+        users.reduce((userMap, user) => ({ ...userMap, [user.id]: user }), {}),
+      );
     };
 
     startFetching();
@@ -47,48 +56,68 @@ export default function Home() {
           </button>
         </div>
         <div className="divide-y divide-gray-300 border-y border-gray-300">
-          {questions.map((question) => (
-            <div className="flex gap-4 p-4" key={question.id}>
-              <div className="w-32 flex-none">
-                <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
-                  <li>{question.voteCount} votes</li>
-                  <li>
-                    {question.answerCount > 0 ? (
-                      <div className="inline-flex h-6 items-center rounded border border-green-700 px-1.5 text-xs text-green-700">
-                        {question.answerCount} answer
-                        {question.answerCount === 1 ? "" : "s"}
-                      </div>
-                    ) : (
-                      <div className="text-gray-500">0 answers</div>
-                    )}
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <a
-                  className="mb-1 block text-xl text-blue-500 hover:text-blue-700"
-                  href="#"
-                >
-                  {question.title}
-                </a>
-                <p className="mb-2 line-clamp-2 text-gray-700">
-                  {question.body}
-                </p>
-                <ul className="flex items-center gap-2">
-                  {question.tagIds.map((tagId) => (
-                    <li className="inline-flex" key={tagId}>
+          {questions.map((question) => {
+            const questionUser = users[question.userId];
+
+            return (
+              <div className="flex gap-4 p-4" key={question.id}>
+                <div className="w-32 flex-none">
+                  <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
+                    <li>{question.voteCount} votes</li>
+                    <li>
+                      {question.answerCount > 0 ? (
+                        <div className="inline-flex h-6 items-center rounded border border-green-700 px-1.5 text-xs text-green-700">
+                          {question.answerCount} answer
+                          {question.answerCount === 1 ? "" : "s"}
+                        </div>
+                      ) : (
+                        <div className="text-gray-500">0 answers</div>
+                      )}
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <a
+                    className="mb-1 block text-xl text-blue-500 hover:text-blue-700"
+                    href="#"
+                  >
+                    {question.title}
+                  </a>
+                  <p className="mb-2 line-clamp-2 text-gray-700">
+                    {question.body}
+                  </p>
+                  <div className="flex justify-between">
+                    <ul className="flex items-center gap-2">
+                      {question.tagIds.map((tagId) => (
+                        <li className="inline-flex" key={tagId}>
+                          <a
+                            className="inline-flex h-6 items-center rounded bg-gray-100 px-1.5 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                            href="#"
+                          >
+                            {tags[tagId].name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex items-center gap-1 text-xs">
                       <a
-                        className="inline-flex h-6 items-center rounded bg-gray-100 px-1.5 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                        className="block text-blue-500 hover:text-blue-700"
                         href="#"
                       >
-                        {tags[tagId].name}
+                        {questionUser.name}
                       </a>
-                    </li>
-                  ))}
-                </ul>
+                      <span className="font-bold text-gray-700">
+                        {questionUser.reputation}
+                      </span>
+                      <span className="text-gray-500">
+                        asked {dayjs().to(dayjs(question.createdAt))}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div className="ml-6 w-80 flex-none">
