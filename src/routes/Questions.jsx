@@ -39,7 +39,7 @@ export default function Home() {
             {questions.length} question{questions.length === 1 ? "" : "s"}
           </p>
           <button
-            className={`rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer ${isOpen ? "bg-blue-300" : "hover:bg-blue-100"}`}
+            className={`rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
             onClick={() => setIsOpen(!isOpen)}
             type="button"
           >
