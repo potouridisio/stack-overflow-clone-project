@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 export default function WatchedTags() {
   const divRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     document.addEventListener("mousedown", (event) => {
       if (divRef.current && !divRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsEditing(false);
       }
     });
   }, []);
@@ -15,7 +15,7 @@ export default function WatchedTags() {
   return (
     <div className="rounded border border-gray-300 p-4" ref={divRef}>
       <h2 className="mb-4 text-lg font-bold text-gray-900">Watched Tags</h2>
-      {isOpen ? (
+      {isEditing ? (
         <form className="flex">
           <input
             autoFocus
@@ -35,7 +35,7 @@ export default function WatchedTags() {
           </p>
           <button
             className="rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer hover:bg-blue-100 active:border-transparent active:bg-blue-300"
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsEditing(true)}
             type="button"
           >
             Watch a tag
