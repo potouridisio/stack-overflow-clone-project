@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+
+import { useClickAway } from "../utils";
 
 export default function WatchedTags() {
-  const divRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", (event) => {
-      if (divRef.current && !divRef.current.contains(event.target)) {
-        setIsEditing(false);
-      }
-    });
-  }, []);
+  const ref = useClickAway(() => {
+    setIsEditing(false);
+  });
 
   return (
-    <div className="rounded border border-gray-300 p-4" ref={divRef}>
+    <div className="rounded border border-gray-300 p-4" ref={ref}>
       <h2 className="mb-4 text-lg font-bold text-gray-900">Watched Tags</h2>
       {isEditing ? (
         <form className="flex">
