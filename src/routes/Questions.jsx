@@ -3,29 +3,34 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 
 import WatchedTags from "../components/WatchedTags";
-import { getQuestions, getTags, getUsers } from "../utils";
+import { getQuestions, getTags, getUsers, getWatchedTags } from "../utils";
 
 dayjs.extend(relativeTime);
 
-export default function Home() {
+export default function Questions() {
   const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
-  const [tags, setTags] = useState({});
-  const [users, setUsers] = useState({});
+  const [tagMap, setTagMap] = useState({});
+  const [userMap, setUserMap] = useState({});
+  const [watchedTags, setWatchedTags] = useState([]);
 
   useEffect(() => {
     const startFetching = async () => {
-      const [questions, { tags }, users] = await Promise.all([
+      const [questions, { tags }, users, watchedTags] = await Promise.all([
         getQuestions(),
         getTags(),
         getUsers(),
+        getWatchedTags(),
       ]);
 
       setQuestions(questions);
-      setTags(tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}));
-      setUsers(
+      setTagMap(
+        tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}),
+      );
+      setUserMap(
         users.reduce((userMap, user) => ({ ...userMap, [user.id]: user }), {}),
       );
+      setWatchedTags(watchedTags);
     };
 
     startFetching();
@@ -37,7 +42,7 @@ export default function Home() {
         <div className="mb-4 flex items-center justify-between pl-6">
           <h1 className="text-3xl text-gray-900">Newest Questions</h1>
           <a
-            className="rounded bg-blue-500 px-3 py-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+            className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
             href="#"
           >
             Ask Question
@@ -48,7 +53,7 @@ export default function Home() {
             {questions.length} question{questions.length === 1 ? "" : "s"}
           </p>
           <button
-            className={`rounded border border-blue-500 px-3 py-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
+            className={`rounded border border-blue-500 p-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
             onClick={() => setIsOpen(!isOpen)}
             type="button"
           >
@@ -57,7 +62,7 @@ export default function Home() {
         </div>
         <div className="divide-y divide-gray-300 border-y border-gray-300">
           {questions.map((question) => {
-            const questionUser = users[question.userId];
+            const questionUser = userMap[question.userId];
 
             return (
               <div className="flex gap-4 p-4" key={question.id}>
@@ -66,7 +71,7 @@ export default function Home() {
                     <li>{question.voteCount} votes</li>
                     <li>
                       {question.answerCount > 0 ? (
-                        <div className="inline-flex h-6 items-center rounded border border-green-700 px-1.5 text-xs text-green-700">
+                        <div className="rounded border border-green-700 p-1 text-xs text-green-700">
                           {question.answerCount} answer
                           {question.answerCount === 1 ? "" : "s"}
                         </div>
@@ -91,10 +96,10 @@ export default function Home() {
                       {question.tagIds.map((tagId) => (
                         <li className="inline-flex" key={tagId}>
                           <a
-                            className="inline-flex h-6 items-center rounded bg-gray-100 px-1.5 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                            className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                             href="#"
                           >
-                            {tags[tagId].name}
+                            {tagMap[tagId].name}
                           </a>
                         </li>
                       ))}
@@ -121,7 +126,7 @@ export default function Home() {
         </div>
       </div>
       <div className="ml-6 w-80 flex-none">
-        <WatchedTags />
+        <WatchedTags tagMap={tagMap} watchedTags={watchedTags} />
       </div>
     </main>
   );

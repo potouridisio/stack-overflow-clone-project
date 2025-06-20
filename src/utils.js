@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export async function getQuestions() {
   const response = await fetch("http://localhost:3000/questions");
@@ -6,14 +6,22 @@ export async function getQuestions() {
   return await response.json();
 }
 
-export async function getTags() {
-  const response = await fetch("http://localhost:3000/tags");
+export async function getTags(searchText) {
+  const response = await fetch(
+    `http://localhost:3000/tags${searchText ? `?q=${searchText}` : ""}`,
+  );
 
   return await response.json();
 }
 
 export async function getUsers() {
   const response = await fetch("http://localhost:3000/users");
+
+  return await response.json();
+}
+
+export async function getWatchedTags() {
+  const response = await fetch("http://localhost:3000/users/1/watchedTags");
 
   return await response.json();
 }
@@ -34,4 +42,19 @@ export function useClickAway(callback) {
   }, [callback]);
 
   return ref;
+}
+
+export function useDebounce(value, delay) {
+  const timeoutID = useRef(0);
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    clearTimeout(timeoutID.current);
+
+    timeoutID.current = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+  }, [delay, value]);
+
+  return debouncedValue;
 }

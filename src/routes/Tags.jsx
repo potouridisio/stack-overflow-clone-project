@@ -30,7 +30,7 @@ export default function Tags() {
             key={tag.id}
           >
             <a
-              className="inline-flex h-6 items-center rounded bg-gray-100 px-1.5 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+              className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
               href="#"
             >
               {tag.name}
