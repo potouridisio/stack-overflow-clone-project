@@ -126,7 +126,11 @@ export default function Questions() {
         </div>
       </div>
       <div className="ml-6 w-80 flex-none">
-        <WatchedTags tagMap={tagMap} watchedTags={watchedTags} />
+        <WatchedTags
+          onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
+          tagMap={tagMap}
+          watchedTags={watchedTags}
+        />
       </div>
     </main>
   );

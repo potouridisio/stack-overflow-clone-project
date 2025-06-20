@@ -26,6 +26,18 @@ export async function getWatchedTags() {
   return await response.json();
 }
 
+export async function saveWatchedTags(watchedTags) {
+  const response = await fetch("http://localhost:3000/users/1/watchedTags", {
+    body: JSON.stringify(watchedTags),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+  });
+
+  return await response.json();
+}
+
 export function useClickAway(callback) {
   const ref = useRef(null);
 

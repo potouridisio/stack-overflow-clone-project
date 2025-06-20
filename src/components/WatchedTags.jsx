@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { getTags, useClickAway, useDebounce } from "../utils";
+import { getTags, saveWatchedTags, useClickAway, useDebounce } from "../utils";
 
-export default function WatchedTags({ tagMap, watchedTags }) {
+export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
   const isWatching = watchedTags.length > 0;
   const [isEditing, setIsEditing] = useState(false);
   const ref = useClickAway(() => {
@@ -10,6 +10,7 @@ export default function WatchedTags({ tagMap, watchedTags }) {
   });
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
+  const [selectedTag, setSelectedTag] = useState(null);
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -25,6 +26,22 @@ export default function WatchedTags({ tagMap, watchedTags }) {
       setTags([]);
     }
   }, [debouncedSearchText]);
+
+  const handleAdd = async (event) => {
+    event.preventDefault();
+
+    await saveWatchedTags([...watchedTags, selectedTag.id]);
+
+    setSelectedTag(null);
+
+    onAdd(selectedTag.id);
+  };
+
+  const handleClickTag = (tag) => {
+    setSearchText("");
+    setSelectedTag(tag);
+    setTags([]);
+  };
 
   const handleEdit = (event) => {
     event.preventDefault();
@@ -55,7 +72,6 @@ export default function WatchedTags({ tagMap, watchedTags }) {
                 href="#"
               >
                 {tagMap[tagId]?.name}
-
                 {isEditing ? (
                   <svg
                     className="-mr-px ml-0.5 size-4 text-gray-500 hover:text-red-700"
@@ -77,13 +93,30 @@ export default function WatchedTags({ tagMap, watchedTags }) {
         </ul>
       ) : null}
       {isEditing ? (
-        <form className="mt-4 flex">
-          <input
-            autoFocus
-            className="grow rounded-l border-y border-l border-gray-300 p-2 text-sm"
-            onChange={(event) => setSearchText(event.target.value)}
-            value={searchText}
-          />
+        <form className="mt-4 flex" onSubmit={handleAdd}>
+          <div className="relative flex grow">
+            <input
+              autoFocus
+              className="grow rounded-l border-y border-l border-gray-300 p-2 text-sm"
+              onChange={(event) => setSearchText(event.target.value)}
+              value={selectedTag?.name ?? searchText}
+            />
+            {tags.length ? (
+              <div className="absolute top-full left-1/2 z-10 w-full -translate-x-1/2 bg-white shadow">
+                <ul className="py-2">
+                  {tags.map((tag) => (
+                    <li
+                      className="p-2 text-gray-900 hover:bg-orange-500 hover:text-white"
+                      onClick={() => handleClickTag(tag)}
+                      key={tag.id}
+                    >
+                      {tag.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
           <button
             className="rounded-r bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
             type="submit"
