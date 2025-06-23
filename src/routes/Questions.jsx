@@ -3,19 +3,25 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 
 import WatchedTags from "../components/WatchedTags";
-import { getQuestions, getTags, getUsers, getWatchedTags } from "../utils";
+import {
+  getQuestions,
+  getTags,
+  getUsers,
+  getWatchedTags,
+  saveWatchedTags,
+} from "../utils";
 
 dayjs.extend(relativeTime);
 
 export default function Questions() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
 
   useEffect(() => {
-    const startFetching = async () => {
+    const fetchAllData = async () => {
       const [questions, { tags }, users, watchedTags] = await Promise.all([
         getQuestions(),
         getTags(),
@@ -33,8 +39,14 @@ export default function Questions() {
       setWatchedTags(watchedTags);
     };
 
-    startFetching();
+    fetchAllData();
   }, []);
+
+  const handleAddWatchedTag = async (tagId) => {
+    await saveWatchedTags([...watchedTags, tagId]);
+
+    setWatchedTags([...watchedTags, tagId]);
+  };
 
   return (
     <main className="flex grow py-6">
@@ -53,8 +65,8 @@ export default function Questions() {
             {questions.length} question{questions.length === 1 ? "" : "s"}
           </p>
           <button
-            className={`rounded border border-blue-500 p-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
-            onClick={() => setIsOpen(!isOpen)}
+            className={`rounded border border-blue-500 p-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isFilterOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
             type="button"
           >
             Filter
@@ -127,7 +139,7 @@ export default function Questions() {
       </div>
       <div className="ml-6 w-80 flex-none">
         <WatchedTags
-          onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
+          onAddWatchedTag={handleAddWatchedTag}
           tagMap={tagMap}
           watchedTags={watchedTags}
         />

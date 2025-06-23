@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { getTags, saveWatchedTags, useClickAway, useDebounce } from "../utils";
+import { getTags, useClickAway, useDebounce } from "../utils";
 
-export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
+export default function WatchedTags({ onAddWatchedTag, tagMap, watchedTags }) {
   const isWatching = watchedTags.length > 0;
   const [isEditing, setIsEditing] = useState(false);
   const ref = useClickAway(() => {
@@ -15,38 +15,39 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
 
   useEffect(() => {
     if (debouncedSearchText) {
-      const startFetching = async () => {
+      (async () => {
         const { tags } = await getTags(debouncedSearchText);
 
         setTags(tags);
-      };
-
-      startFetching();
+      })();
     } else {
       setTags([]);
     }
   }, [debouncedSearchText]);
 
-  const handleAdd = async (event) => {
+  const handleAddWatchedTag = (event) => {
     event.preventDefault();
-
-    await saveWatchedTags([...watchedTags, selectedTag.id]);
 
     setSelectedTag(null);
 
-    onAdd(selectedTag.id);
+    onAddWatchedTag(selectedTag.id);
+  };
+
+  const handleChangeSearchText = (event) => {
+    setSearchText(event.target.value);
+    setSelectedTag(null);
+  };
+
+  const handleClickEdit = (event) => {
+    event.preventDefault();
+
+    setIsEditing(true);
   };
 
   const handleClickTag = (tag) => {
     setSearchText("");
     setSelectedTag(tag);
     setTags([]);
-  };
-
-  const handleEdit = (event) => {
-    event.preventDefault();
-
-    setIsEditing(true);
   };
 
   return (
@@ -57,7 +58,7 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
           <a
             className="inline-flex text-sm text-blue-500 hover:text-blue-700"
             href="#"
-            onClick={handleEdit}
+            onClick={handleClickEdit}
           >
             edit
           </a>
@@ -93,12 +94,12 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
         </ul>
       ) : null}
       {isEditing ? (
-        <form className="mt-4 flex" onSubmit={handleAdd}>
+        <form className="mt-4 flex" onSubmit={handleAddWatchedTag}>
           <div className="relative flex grow">
             <input
               autoFocus
               className="grow rounded-l border-y border-l border-gray-300 p-2 text-sm"
-              onChange={(event) => setSearchText(event.target.value)}
+              onChange={handleChangeSearchText}
               value={selectedTag?.name ?? searchText}
             />
             {tags.length ? (
