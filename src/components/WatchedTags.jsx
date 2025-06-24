@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 import { getTags, useClickAway, useDebounce } from "../utils";
 
@@ -71,9 +72,9 @@ export default function WatchedTags({ onAddWatchedTag, tagMap, watchedTags }) {
         <ul className="flex items-center gap-2">
           {watchedTags.map((tagId) => (
             <li className="inline-flex" key={tagId}>
-              <a
+              <Link
                 className="inline-flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                href="#"
+                to={`/questions/tagged/${tagMap[tagId]?.name}`}
               >
                 {tagMap[tagId]?.name}
                 {isEditing ? (
@@ -91,7 +92,7 @@ export default function WatchedTags({ onAddWatchedTag, tagMap, watchedTags }) {
                     />
                   </svg>
                 ) : null}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
