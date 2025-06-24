@@ -233,7 +233,7 @@ app.post("/questions/:questionId/save", (req, res) => {
 app.get("/tags", (req, res) => {
   const sortBy = req.query.sortBy || "popularity";
   const searchText = req.query.q;
-  const pageSize = 10;
+  const pageSize = 47;
   const page = parseInt(req.query.page || 1);
 
   let orderBy;
