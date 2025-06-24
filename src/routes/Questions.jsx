@@ -59,6 +59,8 @@ export default function Questions() {
 
   const currentTag = tagNameMap[tagName];
 
+  const isWatchingCurrentTag = watchedTags.includes(currentTag?.id);
+
   const filteredQuestions = currentTag
     ? questions.filter((question) => question.tagIds.includes(currentTag.id))
     : questions;
@@ -68,16 +70,20 @@ export default function Questions() {
       <div>
         <div className="pl-6">
           <div className="mb-4 flex items-center justify-between">
-            {/* prettier-ignore */}
-            <h1 className={`text-3xl${tagName ? " font-bold" : ""} text-gray-900`}>
-            {tagName ? `[${tagName}]` : "Newest Questions"}
-          </h1>
-            <a
-              className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
-              href="#"
+            <h1
+              // prettier-ignore
+              className={`text-3xl${tagName ? " font-bold" : ""} text-gray-900`}
             >
-              Ask Question
-            </a>
+              {tagName ? `[${tagName}]` : "Newest Questions"}
+            </h1>
+            {!currentTag || (currentTag && isWatchingCurrentTag) ? (
+              <a
+                className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+                href="#"
+              >
+                Ask Question
+              </a>
+            ) : null}
           </div>
           {currentTag ? (
             <p className="mb-4 max-w-2xl text-sm text-gray-900">
