@@ -90,6 +90,17 @@ export default function Questions() {
               {currentTag.description}
             </p>
           ) : null}
+          {currentTag && !isWatchingCurrentTag ? (
+            <div className="mb-6 flex gap-2">
+              <button
+                className="rounded bg-blue-500 p-2 text-sm text-white hover:cursor-pointer hover:bg-blue-700 active:bg-blue-900"
+                onClick={() => handleAddWatchedTag(currentTag.id)}
+                type="button"
+              >
+                Watch tag
+              </button>
+            </div>
+          ) : null}
         </div>
         <div className="mb-4 flex items-center justify-between pl-6">
           <p className="text-lg text-gray-900">
