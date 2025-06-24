@@ -7,6 +7,9 @@ export default function WatchedTags({ onAddWatchedTag, tagMap, watchedTags }) {
   const [isEditing, setIsEditing] = useState(false);
   const ref = useClickAway(() => {
     setIsEditing(false);
+    setSearchText("");
+    setSelectedTag(null);
+    setTags([]);
   });
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 500);
@@ -107,7 +110,7 @@ export default function WatchedTags({ onAddWatchedTag, tagMap, watchedTags }) {
                 <ul className="py-2">
                   {tags.map((tag) => (
                     <li
-                      className="p-2 text-gray-900 hover:bg-orange-500 hover:text-white"
+                      className="p-2 text-gray-900 hover:cursor-pointer hover:bg-orange-500 hover:text-white"
                       onClick={() => handleClickTag(tag)}
                       key={tag.id}
                     >
