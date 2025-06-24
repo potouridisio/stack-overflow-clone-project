@@ -60,7 +60,7 @@ export default function Questions() {
   const currentTag = tagNameMap[tagName];
 
   return (
-    <main className="flex grow py-6">
+    <main className="flex grow py-6 pr-6">
       <div>
         <div className="pl-6">
           <div className="mb-4 flex items-center justify-between">
