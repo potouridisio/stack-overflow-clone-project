@@ -59,6 +59,10 @@ export default function Questions() {
 
   const currentTag = tagNameMap[tagName];
 
+  const filteredQuestions = currentTag
+    ? questions.filter((question) => question.tagIds.includes(currentTag.id))
+    : questions;
+
   return (
     <main className="flex grow py-6 pr-6">
       <div>
@@ -83,7 +87,8 @@ export default function Questions() {
         </div>
         <div className="mb-4 flex items-center justify-between pl-6">
           <p className="text-lg text-gray-900">
-            {questions.length} question{questions.length === 1 ? "" : "s"}
+            {filteredQuestions.length} question
+            {filteredQuestions.length === 1 ? "" : "s"}
           </p>
           <button
             className={`rounded border border-blue-500 p-1.5 text-sm text-blue-500 hover:cursor-pointer active:border-transparent active:bg-blue-300 ${isFilterOpen ? "bg-blue-300 text-blue-700" : "hover:bg-blue-100"}`}
@@ -94,7 +99,7 @@ export default function Questions() {
           </button>
         </div>
         <div className="divide-y divide-gray-300 border-y border-gray-300">
-          {questions.map((question) => {
+          {filteredQuestions.map((question) => {
             const questionUser = userMap[question.userId];
 
             return (
