@@ -12,7 +12,10 @@ createRoot(document.getElementById("root")).render(
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Questions />} />
-        <Route path="questions" element={<Questions />} />
+        <Route path="questions">
+          <Route index element={<Questions />} />
+          <Route path="tagged/:tagName" element={<Questions />} />
+        </Route>
         <Route path="tags" element={<Tags />} />
       </Route>
     </Routes>

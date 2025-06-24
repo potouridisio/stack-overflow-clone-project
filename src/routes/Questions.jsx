@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 
 import WatchedTags from "../components/WatchedTags";
 import {
@@ -14,9 +15,11 @@ import {
 dayjs.extend(relativeTime);
 
 export default function Questions() {
+  const { tagName } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [tagMap, setTagMap] = useState({});
+  const [tagNameMap, setTagNameMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
 
@@ -33,6 +36,12 @@ export default function Questions() {
       setTagMap(
         tags.reduce((tagMap, tag) => ({ ...tagMap, [tag.id]: tag }), {}),
       );
+      setTagNameMap(
+        tags.reduce(
+          (tagNameMap, tag) => ({ ...tagNameMap, [tag.name]: tag }),
+          {},
+        ),
+      );
       setUserMap(
         users.reduce((userMap, user) => ({ ...userMap, [user.id]: user }), {}),
       );
@@ -48,17 +57,29 @@ export default function Questions() {
     setWatchedTags([...watchedTags, tagId]);
   };
 
+  const currentTag = tagNameMap[tagName];
+
   return (
     <main className="flex grow py-6">
       <div>
-        <div className="mb-4 flex items-center justify-between pl-6">
-          <h1 className="text-3xl text-gray-900">Newest Questions</h1>
-          <a
-            className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
-            href="#"
-          >
-            Ask Question
-          </a>
+        <div className="pl-6">
+          <div className="mb-4 flex items-center justify-between">
+            {/* prettier-ignore */}
+            <h1 className={`text-3xl${tagName ? " font-bold" : ""} text-gray-900`}>
+            {tagName ? `[${tagName}]` : "Newest Questions"}
+          </h1>
+            <a
+              className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+              href="#"
+            >
+              Ask Question
+            </a>
+          </div>
+          {currentTag ? (
+            <p className="mb-4 max-w-2xl text-sm text-gray-900">
+              {currentTag.description}
+            </p>
+          ) : null}
         </div>
         <div className="mb-4 flex items-center justify-between pl-6">
           <p className="text-lg text-gray-900">
@@ -107,12 +128,12 @@ export default function Questions() {
                     <ul className="flex items-center gap-2">
                       {question.tagIds.map((tagId) => (
                         <li className="inline-flex" key={tagId}>
-                          <a
+                          <Link
                             className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                            href="#"
+                            to={`/questions/tagged/${tagMap[tagId].name}`}
                           >
                             {tagMap[tagId].name}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
