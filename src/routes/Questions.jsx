@@ -113,6 +113,12 @@ export default function Questions() {
             Filter
           </button>
         </div>
+        {isFilterOpen ? (
+          <div className="mb-4 rounded border border-gray-300 bg-gray-100">
+            <div className="px-3 py-4"></div>
+            <div className="border-t border-t-gray-300 p-3"></div>
+          </div>
+        ) : null}
         <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
           {filteredQuestions.map((question) => {
             const questionUser = userMap[question.userId];
