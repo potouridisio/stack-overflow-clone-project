@@ -66,43 +66,41 @@ export default function Questions() {
     : questions;
 
   return (
-    <main className="flex grow py-6 pr-6">
+    <main className="flex grow gap-6 p-6">
       <div>
-        <div className="pl-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h1
-              // prettier-ignore
-              className={`text-3xl${tagName ? " font-bold" : ""} text-gray-900`}
+        <div className="mb-4 flex items-center justify-between">
+          <h1
+            // prettier-ignore
+            className={`text-3xl${tagName ? " font-bold" : ""} text-gray-900`}
+          >
+            {tagName ? `[${tagName}]` : "Newest Questions"}
+          </h1>
+          {!currentTag || (currentTag && isWatchingCurrentTag) ? (
+            <a
+              className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+              href="#"
             >
-              {tagName ? `[${tagName}]` : "Newest Questions"}
-            </h1>
-            {!currentTag || (currentTag && isWatchingCurrentTag) ? (
-              <a
-                className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
-                href="#"
-              >
-                Ask Question
-              </a>
-            ) : null}
-          </div>
-          {currentTag ? (
-            <p className="mb-4 max-w-2xl text-sm text-gray-900">
-              {currentTag.description}
-            </p>
-          ) : null}
-          {currentTag && !isWatchingCurrentTag ? (
-            <div className="mb-6 flex gap-2">
-              <button
-                className="rounded bg-blue-500 p-2 text-sm text-white hover:cursor-pointer hover:bg-blue-700 active:bg-blue-900"
-                onClick={() => handleAddWatchedTag(currentTag.id)}
-                type="button"
-              >
-                Watch tag
-              </button>
-            </div>
+              Ask Question
+            </a>
           ) : null}
         </div>
-        <div className="mb-4 flex items-center justify-between pl-6">
+        {currentTag ? (
+          <p className="mb-4 max-w-2xl text-sm text-gray-900">
+            {currentTag.description}
+          </p>
+        ) : null}
+        {currentTag && !isWatchingCurrentTag ? (
+          <div className="mb-6 flex gap-2">
+            <button
+              className="rounded bg-blue-500 p-2 text-sm text-white hover:cursor-pointer hover:bg-blue-700 active:bg-blue-900"
+              onClick={() => handleAddWatchedTag(currentTag.id)}
+              type="button"
+            >
+              Watch tag
+            </button>
+          </div>
+        ) : null}
+        <div className="mb-4 flex items-center justify-between">
           <p className="text-lg text-gray-900">
             {filteredQuestions.length} question
             {filteredQuestions.length === 1 ? "" : "s"}
@@ -115,7 +113,7 @@ export default function Questions() {
             Filter
           </button>
         </div>
-        <div className="divide-y divide-gray-300 border-y border-gray-300">
+        <div className="-ml-6 divide-y divide-gray-300 border-y border-gray-300">
           {filteredQuestions.map((question) => {
             const questionUser = userMap[question.userId];
 
@@ -180,7 +178,7 @@ export default function Questions() {
           })}
         </div>
       </div>
-      <div className="ml-6 w-80 flex-none">
+      <div className="w-80 flex-none">
         <WatchedTags
           onAddWatchedTag={handleAddWatchedTag}
           tagMap={tagMap}
