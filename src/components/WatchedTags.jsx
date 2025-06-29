@@ -37,6 +37,10 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
     onAdd(selectedTag.id);
   };
 
+  const handleRemove = async (event) => {
+    event.preventDefault();
+  };
+
   const handleClickTag = (tag) => {
     setSearchText("");
     setSelectedTag(tag);
@@ -76,7 +80,7 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
                   <svg
                     className="-mr-px ml-0.5 size-4 text-gray-500 hover:text-red-700"
                     fill="currentColor"
-                    onClick={(event) => event.preventDefault()}
+                    onClick={handleRemove}
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
