@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { getTags, saveWatchedTags, useClickAway, useDebounce } from "../utils";
 
-export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
+export default function WatchedTags({ onAdd, onRemove, tagMap, watchedTags }) {
   const isWatching = watchedTags.length > 0;
   const [isEditing, setIsEditing] = useState(false);
   const ref = useClickAway(() => {
@@ -37,8 +37,11 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
     onAdd(selectedTag.id);
   };
 
-  const handleRemove = async (event) => {
+  const handleRemove = async (event, tagId) => {
     event.preventDefault();
+    const updatedTags = watchedTags.filter((id) => id !== tagId);
+    await saveWatchedTags(updatedTags);
+    onRemove(tagId);
   };
 
   const handleClickTag = (tag) => {
@@ -80,7 +83,7 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
                   <svg
                     className="-mr-px ml-0.5 size-4 text-gray-500 hover:text-red-700"
                     fill="currentColor"
-                    onClick={handleRemove}
+                    onClick={(event) => handleRemove(event, tagId)}
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
