@@ -96,10 +96,11 @@ export default function Questions() {
                       {question.tagIds.map((tagId) => (
                         <li className="inline-flex" key={tagId}>
                           <a
-                            className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                            className="flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                             href="#"
                           >
                             <svg
+                              className="mr-1"
                               xmlns="http://www.w3.org/2000/svg"
                               width="14"
                               height="14"
