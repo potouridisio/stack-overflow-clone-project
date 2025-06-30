@@ -63,6 +63,9 @@ export default function Questions() {
         <div className="divide-y divide-gray-300 border-y border-gray-300">
           {questions.map((question) => {
             const questionUser = userMap[question.userId];
+            const filteredWatchedTags = question.tagIds.filter((tagId) =>
+              watchedTags.includes(tagId),
+            );
 
             return (
               <div className="flex gap-4 p-4" key={question.id}>
