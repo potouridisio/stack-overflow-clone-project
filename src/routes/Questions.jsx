@@ -68,7 +68,15 @@ export default function Questions() {
             );
 
             return (
-              <div className="flex gap-4 p-4" key={question.id}>
+              <div
+                className="flex gap-4 p-4"
+                key={question.id}
+                style={
+                  filteredWatchedTags.length > 0
+                    ? { backgroundColor: "hsl(43,85%,95%)" }
+                    : null
+                }
+              >
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
