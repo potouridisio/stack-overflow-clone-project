@@ -132,6 +132,7 @@ export default function Questions() {
       <div className="ml-6 w-80 flex-none">
         <WatchedTags
           onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
+          onRemove={(updatedTags) => setWatchedTags(updatedTags)}
           tagMap={tagMap}
           watchedTags={watchedTags}
         />
