@@ -24,6 +24,10 @@ export default function Questions() {
     return `${isMatched ? "bg-yellow-100 border " : ""}`;
   };
 
+  const handleRemoveTag = (tagId) => {
+    setWatchedTags(watchedTags.filter((id) => id !== tagId))
+  };
+
 
   useEffect(() => {
     const startFetching = async () => {
@@ -154,6 +158,7 @@ export default function Questions() {
           onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
           tagMap={tagMap}
           watchedTags={watchedTags}
+          tagRemove={ handleRemoveTag }
         />
       </div>
     </main>
