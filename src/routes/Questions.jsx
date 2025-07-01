@@ -121,17 +121,19 @@ export default function Questions() {
                     <ul className="flex items-center gap-2">
                       {question.tagIds.map((tagId) => (
                         <li className="inline-flex" key={tagId}>
-                          <div className="relative">
+                          <div
+                            className="relative"
+                            onMouseEnter={() =>
+                              setIsShowTagedTooltip({
+                                tagId,
+                                questionId: question.id,
+                              })
+                            }
+                            onMouseLeave={() => setIsShowTagedTooltip(null)}
+                          >
                             <a
                               className="flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                               href="#"
-                              onMouseOver={() =>
-                                setIsShowTagedTooltip({
-                                  tagId,
-                                  questionId: question.id,
-                                })
-                              }
-                              onMouseOut={() => setIsShowTagedTooltip(null)}
                             >
                               {watchedTags.includes(tagId) ? (
                                 <svg
@@ -148,6 +150,7 @@ export default function Questions() {
 
                               {tagMap[tagId].name}
                             </a>
+                            <div className="absolute top-full left-1/2 h-4 w-10 -translate-x-1/2" />
                             {showTagedTooltip?.tagId === tagId &&
                               showTagedTooltip.questionId === question.id &&
                               myTooltip(tagId)}
