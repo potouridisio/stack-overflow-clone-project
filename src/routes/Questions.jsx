@@ -122,7 +122,12 @@ export default function Questions() {
                             <a
                               className="flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                               href="#"
-                              onMouseOver={() => setIsShowTagedTooltip(tagId)}
+                              onMouseOver={() =>
+                                setIsShowTagedTooltip({
+                                  tagId,
+                                  questionId: question.id,
+                                })
+                              }
                               onMouseOut={() => setIsShowTagedTooltip(null)}
                             >
                               {watchedTags.includes(tagId) ? (
@@ -140,7 +145,9 @@ export default function Questions() {
 
                               {tagMap[tagId].name}
                             </a>
-                            {showTagedTooltip === tagId && myTooltip(tagId)}
+                            {showTagedTooltip?.tagId === tagId &&
+                              showTagedTooltip.questionId === question.id &&
+                              myTooltip(tagId)}
                           </div>
                         </li>
                       ))}
