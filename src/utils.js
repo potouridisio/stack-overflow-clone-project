@@ -70,3 +70,16 @@ export function useDebounce(value, delay) {
 
   return debouncedValue;
 }
+export function HighlightTag(tagId, watchedTags) {
+  const redo = [];
+            for (let j = 0; j < watchedTags.length; j++) {
+              if (tagId === watchedTags[j] && watchedTags[j] != redo[j]) { 
+                redo.push(tagId)
+                return true;
+              }
+              else if (tagId === watchedTags[j] && watchedTags[j] === redo[j]){
+                continue;
+              }
+            }
+            return false; 
+}
