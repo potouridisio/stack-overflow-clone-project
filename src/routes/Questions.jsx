@@ -42,20 +42,20 @@ export default function Questions() {
         users.reduce((userMap, user) => ({ ...userMap, [user.id]: user }), {}),
       );
       setWatchedTags(watchedTags);
-      
+    };
 
+    startFetching();
+  }, []);
 
-      const matched = questions.filter((q) =>
+  useEffect(()=>{
+    const matched = questions.filter((q) =>
         q.tagIds.find((tagId) => watchedTags.includes(tagId))
       );
 
       console.log("Matched Questions:", matched);
 
       setMatchedQuestions(matched);
-    };
-
-    startFetching();
-  }, []);
+  },[watchedTags])
 
   return (
     <main className="flex grow py-6">
