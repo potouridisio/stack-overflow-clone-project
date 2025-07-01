@@ -13,6 +13,7 @@ export default function Questions() {
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
+  const [showTooltip, setIsShowTooltip] = useState(false);
 
   useEffect(() => {
     const startFetching = async () => {
