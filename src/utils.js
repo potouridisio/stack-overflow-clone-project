@@ -70,6 +70,16 @@ export function useDebounce(value, delay) {
 
   return debouncedValue;
 }
+export function IsWatched(question, watchedTags) {
+            for (let i = 0; i < question.tagIds.length; i++) {
+              for (let j = 0; j < watchedTags.length; j++) {
+                if (question.tagIds[i] === watchedTags[j]) {
+                  return true;
+                }
+              }
+            }
+            return false;
+          }
 export function HighlightTag(tagId, watchedTags) {
   const redo = [];
             for (let j = 0; j < watchedTags.length; j++) {
@@ -82,4 +92,4 @@ export function HighlightTag(tagId, watchedTags) {
               }
             }
             return false; 
-}
+          }

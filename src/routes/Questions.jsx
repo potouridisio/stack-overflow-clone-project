@@ -3,7 +3,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 
 import WatchedTags from "../components/WatchedTags";
-import { getQuestions, getTags, getUsers, getWatchedTags, HighlightTag } from "../utils";
+import { getQuestions, getTags, getUsers, getWatchedTags, IsWatched, HighlightTag, } from "../utils";
 
 dayjs.extend(relativeTime);
 
@@ -63,16 +63,8 @@ export default function Questions() {
         <div className="divide-y divide-gray-300 border-y border-gray-300">
           {questions.map((question) => {
             const questionUser = userMap[question.userId];
-            let IsWatched = false;
-            for (let i = 0; i < question.tagIds.length; i++) {
-              for (let j = 0; j < watchedTags.length; j++) {
-                if (question.tagIds[i] === watchedTags[j]) {
-                  IsWatched = true;
-                }
-              }
-            }
             return (
-              <div className={`flex gap-4 p-4 ${IsWatched ? "bg-yellow-100" : "" }`} key={question.id}>
+              <div className={`flex gap-4 p-4 ${IsWatched(question, watchedTags) ? "bg-yellow-100" : "" }`} key={question.id}>
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
