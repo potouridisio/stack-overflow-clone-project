@@ -51,7 +51,7 @@ export default function Questions() {
         <h1 className="font-bold">{tag.name}</h1>
         <p>{tag.description}</p>
         <button
-          className="mt-4 w-full rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+          className={`mt-4 w-full cursor-pointer rounded p-2 text-sm ${!watchedTags.includes(tagId) ? "bg-blue-500 text-white hover:bg-blue-700 active:bg-blue-900" : "border border-b-neutral-500 text-neutral-500"}`}
           type="button"
         >
           {watchedTags.includes(tagId) ? "Unwatch Tag" : "Watch Tag"}
