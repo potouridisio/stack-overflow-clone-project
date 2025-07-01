@@ -63,9 +63,16 @@ export default function Questions() {
         <div className="divide-y divide-gray-300 border-y border-gray-300">
           {questions.map((question) => {
             const questionUser = userMap[question.userId];
-
+            let IsHighlighted = false;
+            for (let i = 0; i < question.tagIds.length; i++) {
+              for (let j = 0; j < watchedTags.length; j++) {
+                if (question.tagIds[i] === watchedTags[j]) {
+                  IsHighlighted = true;
+                }
+              }
+            }
             return (
-              <div className="flex gap-4 p-4" key={question.id}>
+              <div className={`flex gap-4 p-4 ${IsHighlighted ? "bg-yellow-100" : null }`} key={question.id}>
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
@@ -85,7 +92,7 @@ export default function Questions() {
                   <a
                     className="mb-1 block text-xl text-blue-500 hover:text-blue-700"
                     href="#"
-                  >
+                  > 
                     {question.title}
                   </a>
                   <p className="mb-2 line-clamp-2 text-gray-700">
@@ -99,7 +106,7 @@ export default function Questions() {
                             className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                             href="#"
                           >
-                            {tagMap[tagId].name}
+                            {tagMap[tagId].name} 
                           </a>
                         </li>
                       ))}
