@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import WatchedTags from "../components/WatchedTags";
 import { getQuestions, getTags, getUsers, getWatchedTags } from "../utils";
 
+import { FaEye } from "react-icons/fa";
+
+
 dayjs.extend(relativeTime);
 
 export default function Questions() {
@@ -111,16 +114,19 @@ export default function Questions() {
                   </p>
                   <div className="flex justify-between">
                     <ul className="flex items-center gap-2">
-                      {question.tagIds.map((tagId) => (
-                        <li className="inline-flex" key={tagId}>
-                          <a
-                            className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                            href="#"
-                          >
-                            {tagMap[tagId].name}
-                          </a>
-                        </li>
-                      ))}
+                      {question.tagIds.map((tagId) =>{ 
+                        const iswatched = watchedTags.includes(tagId);
+
+                        return (<li className="inline-flex" key={tagId}>
+                            <a
+                              className="flex justify-center align-middle rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                              href="#"
+                            > {iswatched ? <span className="flex items-center p-0.5"> <FaEye/> </span> : null}
+                              {tagMap[tagId].name}
+                            </a>
+                          </li>
+                        );
+                    })}
                     </ul>
                     <div className="flex items-center gap-1 text-xs">
                       <a
