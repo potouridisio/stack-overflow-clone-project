@@ -41,9 +41,12 @@ export default function Questions() {
     const tag = tagMap[tagId];
     if (!tag) return null;
     return (
-      <div className="absolute z-10 rounded border border-gray-300 bg-white p-2 text-xs shadow-lg">
+      <div className="absolute left-1/2 z-10 mt-2 w-80 -translate-x-1/2 rounded border border-gray-300 bg-white p-2 p-4 text-xs shadow-lg">
         <h1 className="font-bold">{tag.name}</h1>
         <p>{tag.description}</p>
+        <button className="mt-4 w-full rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900">
+          {watchedTags.includes(tagId) ? "Unwatch Tag" : "Watch Tag"}
+        </button>
       </div>
     );
   }
