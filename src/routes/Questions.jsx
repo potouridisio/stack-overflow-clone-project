@@ -13,6 +13,14 @@ export default function Questions() {
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
+  // state for saving if a question is matched with a watch tag
+  const [matchedQuestions,setMatchedQuestions]=useState([]);
+
+  const getQuestionClassName = (question, matchedQuestions) => {
+    const isMatched = matchedQuestions.some((mq) => mq.id === question.id);
+    return `${isMatched ? "bg-yellow-100 border " : ""}`;
+  };
+
 
   useEffect(() => {
     const startFetching = async () => {
@@ -31,6 +39,16 @@ export default function Questions() {
         users.reduce((userMap, user) => ({ ...userMap, [user.id]: user }), {}),
       );
       setWatchedTags(watchedTags);
+      
+
+
+      const matched = questions.filter((q) =>
+        q.tagIds.find((tagId) => watchedTags.includes(tagId))
+      );
+
+      console.log("Matched Questions:", matched);
+
+      setMatchedQuestions(matched);
     };
 
     startFetching();
@@ -65,7 +83,7 @@ export default function Questions() {
             const questionUser = userMap[question.userId];
 
             return (
-              <div className="flex gap-4 p-4" key={question.id}>
+              <div className={`flex gap-4 p-4 ${getQuestionClassName(question,matchedQuestions)}`} key={question.id}>
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
