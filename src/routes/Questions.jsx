@@ -13,7 +13,7 @@ export default function Questions() {
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
-  const [showTooltip, setIsShowTooltip] = useState(false);
+  const [showTagedTooltip, setIsShowTagedTooltip] = useState(null);
 
   useEffect(() => {
     const startFetching = async () => {
@@ -122,8 +122,8 @@ export default function Questions() {
                             <a
                               className="flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                               href="#"
-                              onMouseOver={() => setIsShowTooltip(true)}
-                              onMouseOut={() => setIsShowTooltip(false)}
+                              onMouseOver={() => setIsShowTagedTooltip(tagId)}
+                              onMouseOut={() => setIsShowTagedTooltip(null)}
                             >
                               {watchedTags.includes(tagId) ? (
                                 <svg
@@ -140,7 +140,7 @@ export default function Questions() {
 
                               {tagMap[tagId].name}
                             </a>
-                            {showTooltip && myTooltip(tagId)}
+                            {showTagedTooltip === tagId && myTooltip(tagId)}
                           </div>
                         </li>
                       ))}
