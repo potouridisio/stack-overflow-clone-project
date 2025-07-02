@@ -18,6 +18,8 @@ export default function Questions() {
   const [watchedTags, setWatchedTags] = useState([]);
   // state for saving if a question is matched with a watch tag
   const [matchedQuestions,setMatchedQuestions]=useState([]);
+  //state for tooltip show
+  const [openTooltipTagId,setOpenTooltipTagId] = useState(null);
 
   const getQuestionClassName = (question, matchedQuestions) => {
     const isMatched = matchedQuestions.some((mq) => mq.id === question.id);
@@ -121,13 +123,33 @@ export default function Questions() {
                       {question.tagIds.map((tagId) =>{ 
                         const iswatched = watchedTags.includes(tagId);
 
-                        return (<li className="inline-flex" key={tagId}>
+                        return (<li className="relative inline-flex" key={tagId}>
                             <a
                               className="flex justify-center align-middle rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
                               href="#"
+                              onMouseEnter={() => setOpenTooltipTagId(tagId)}
+                              // onMouseLeave={() => setOpenTooltipTagId(null)}
                             > {iswatched ? <span className="flex items-center p-0.5"> <FaEye/> </span> : null}
                               {tagMap[tagId].name}
                             </a>
+                            {openTooltipTagId === tagId ?
+                              <div className="absolute top-full left-1/2 z-10 w-full h-full content-center -translate-x-1/2 bg-white shadow">
+                                <button className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+                                  onClick={() => {
+                                    if(iswatched){
+                                        setWatchedTags(watchedTags.filter((id) => id !== tagId))
+                                    }else{
+                                        setWatchedTags([...watchedTags,tagId])
+                                    }
+                                    
+                                  }}
+                                  type="button"
+                                >
+                                  {!iswatched ? "Watch" : "Unwatch"}
+                                </button>
+                              </div>
+                              : null
+                            }
                           </li>
                         );
                     })}
