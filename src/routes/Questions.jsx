@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import WatchedTags from "../components/WatchedTags";
 import { getQuestions, getTags, getUsers, getWatchedTags } from "../utils";
 
+import { FaEye } from "react-icons/fa";
+
+
 dayjs.extend(relativeTime);
 
 export default function Questions() {
@@ -13,6 +16,20 @@ export default function Questions() {
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
+  // state for saving if a question is matched with a watch tag
+  const [matchedQuestions,setMatchedQuestions]=useState([]);
+  //state for tooltip show
+  const [openTooltipTagId,setOpenTooltipTagId] = useState(null);
+
+  const getQuestionClassName = (question, matchedQuestions) => {
+    const isMatched = matchedQuestions.some((mq) => mq.id === question.id);
+    return `${isMatched ? "bg-yellow-100 border " : ""}`;
+  };
+
+  const handleRemoveTag = (tagId) => {
+    setWatchedTags(watchedTags.filter((id) => id !== tagId))
+  };
+
 
   useEffect(() => {
     const startFetching = async () => {
@@ -35,6 +52,16 @@ export default function Questions() {
 
     startFetching();
   }, []);
+
+  useEffect(()=>{
+    const matched = questions.filter((q) =>
+        q.tagIds.find((tagId) => watchedTags.includes(tagId))
+      );
+
+      console.log("Matched Questions:", matched);
+
+      setMatchedQuestions(matched);
+  },[watchedTags])
 
   return (
     <main className="flex grow py-6">
@@ -65,7 +92,7 @@ export default function Questions() {
             const questionUser = userMap[question.userId];
 
             return (
-              <div className="flex gap-4 p-4" key={question.id}>
+              <div className={`flex gap-4 p-4 ${getQuestionClassName(question,matchedQuestions)}`} key={question.id}>
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
@@ -93,16 +120,39 @@ export default function Questions() {
                   </p>
                   <div className="flex justify-between">
                     <ul className="flex items-center gap-2">
-                      {question.tagIds.map((tagId) => (
-                        <li className="inline-flex" key={tagId}>
-                          <a
-                            className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                            href="#"
-                          >
-                            {tagMap[tagId].name}
-                          </a>
-                        </li>
-                      ))}
+                      {question.tagIds.map((tagId) =>{ 
+                        const iswatched = watchedTags.includes(tagId);
+
+                        return (<li className="relative inline-flex" key={tagId}>
+                            <a
+                              className="flex justify-center align-middle rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                              href="#"
+                              onMouseEnter={() => setOpenTooltipTagId(tagId)}
+                              // onMouseLeave={() => setOpenTooltipTagId(null)}
+                            > {iswatched ? <span className="flex items-center p-0.5"> <FaEye/> </span> : null}
+                              {tagMap[tagId].name}
+                            </a>
+                            {openTooltipTagId === tagId ?
+                              <div className="absolute top-full left-1/2 z-10 w-full h-full content-center -translate-x-1/2 bg-white shadow">
+                                <button className="rounded bg-blue-500 p-2 text-sm text-white hover:bg-blue-700 active:bg-blue-900"
+                                  onClick={() => {
+                                    if(iswatched){
+                                        setWatchedTags(watchedTags.filter((id) => id !== tagId))
+                                    }else{
+                                        setWatchedTags([...watchedTags,tagId])
+                                    }
+                                    
+                                  }}
+                                  type="button"
+                                >
+                                  {!iswatched ? "Watch" : "Unwatch"}
+                                </button>
+                              </div>
+                              : null
+                            }
+                          </li>
+                        );
+                    })}
                     </ul>
                     <div className="flex items-center gap-1 text-xs">
                       <a
@@ -130,6 +180,7 @@ export default function Questions() {
           onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
           tagMap={tagMap}
           watchedTags={watchedTags}
+          tagRemove={ handleRemoveTag }
         />
       </div>
     </main>

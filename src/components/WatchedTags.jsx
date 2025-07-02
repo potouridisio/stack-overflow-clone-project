@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { getTags, saveWatchedTags, useClickAway, useDebounce } from "../utils";
 
-export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
+export default function WatchedTags({ onAdd, tagMap, watchedTags, tagRemove }) {
   const isWatching = watchedTags.length > 0;
   const [isEditing, setIsEditing] = useState(false);
   const ref = useClickAway(() => {
@@ -49,6 +49,8 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
     setIsEditing(true);
   };
 
+    
+
   return (
     <div className="rounded border border-gray-300 p-4" ref={ref}>
       <div className="mb-4 flex items-center justify-between">
@@ -76,7 +78,11 @@ export default function WatchedTags({ onAdd, tagMap, watchedTags }) {
                   <svg
                     className="-mr-px ml-0.5 size-4 text-gray-500 hover:text-red-700"
                     fill="currentColor"
-                    onClick={(event) => event.preventDefault()}
+                    onClick={(event)=> {
+                        event.preventDefault()
+                        tagRemove(tagId)
+                      }
+                    }
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
