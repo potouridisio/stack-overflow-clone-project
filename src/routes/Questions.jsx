@@ -13,6 +13,7 @@ export default function Questions() {
   const [tagMap, setTagMap] = useState({});
   const [userMap, setUserMap] = useState({});
   const [watchedTags, setWatchedTags] = useState([]);
+  const [showTagedTooltip, setIsShowTagedTooltip] = useState(null);
 
   useEffect(() => {
     const startFetching = async () => {
@@ -35,6 +36,36 @@ export default function Questions() {
 
     startFetching();
   }, []);
+
+  function myTooltip(tagId) {
+    const tag = tagMap[tagId];
+    if (!tag) return null;
+    return (
+      <div className="absolute left-1/2 z-10 mt-2 w-80 -translate-x-1/2 rounded border border-gray-300 bg-white p-4 text-xs shadow-lg">
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2">
+          <div className="h-0 w-0 border-x-8 border-b-8 border-x-transparent border-b-gray-300" />
+        </div>
+        <div className="absolute -top-1.5 left-1/2 z-10 -translate-x-1/2">
+          <div className="h-0 w-0 border-x-7 border-b-7 border-x-transparent border-b-white" />
+        </div>
+        <h1 className="text-xl font-bold">{tag.name}</h1>
+        <p>{tag.description}</p>
+        <button
+          // onClick={() => {
+          //   if (watchedTags.includes(tagId)) {
+          //     setWatchedTags(watchedTags.filter((id) => id !== tagId));
+          //   } else {
+          //     setWatchedTags([...watchedTags, tagId]);
+          //   }
+          // }}
+          className={`mt-4 w-full cursor-pointer rounded p-2 text-sm ${!watchedTags.includes(tagId) ? "bg-blue-500 text-white hover:bg-blue-700 active:bg-blue-900" : "border border-b-neutral-500 text-neutral-500"}`}
+          type="button"
+        >
+          {watchedTags.includes(tagId) ? "Unwatch Tag" : "Watch Tag"}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <main className="flex grow py-6">
@@ -63,9 +94,20 @@ export default function Questions() {
         <div className="divide-y divide-gray-300 border-y border-gray-300">
           {questions.map((question) => {
             const questionUser = userMap[question.userId];
+            const filteredWatchedTags = question.tagIds.filter((tagId) =>
+              watchedTags.includes(tagId),
+            );
 
             return (
-              <div className="flex gap-4 p-4" key={question.id}>
+              <div
+                className="flex gap-4 p-4"
+                key={question.id}
+                style={
+                  filteredWatchedTags.length > 0
+                    ? { backgroundColor: "hsl(43,85%,95%)" }
+                    : null
+                }
+              >
                 <div className="w-32 flex-none">
                   <ul className="flex flex-col items-end gap-2 py-1 text-sm text-gray-900">
                     <li>{question.voteCount} votes</li>
@@ -95,12 +137,40 @@ export default function Questions() {
                     <ul className="flex items-center gap-2">
                       {question.tagIds.map((tagId) => (
                         <li className="inline-flex" key={tagId}>
-                          <a
-                            className="rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                            href="#"
+                          <div
+                            className="relative"
+                            onMouseEnter={() =>
+                              setIsShowTagedTooltip({
+                                tagId,
+                                questionId: question.id,
+                              })
+                            }
+                            onMouseLeave={() => setIsShowTagedTooltip(null)}
                           >
-                            {tagMap[tagId].name}
-                          </a>
+                            <a
+                              className="flex items-center rounded bg-gray-100 p-1 text-xs font-bold text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                              href="#"
+                            >
+                              {watchedTags.includes(tagId) ? (
+                                <svg
+                                  className="mr-1"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 14 14"
+                                  fill="currentColor"
+                                >
+                                  <path d="M7.05 1C2.63 1 0 6.5 0 6.5S2.63 12 7.05 12C11.38 12 14 6.5 14 6.5S11.37 1 7.05 1ZM7 10.17A3.59 3.59 0 0 1 3.5 6.5 3.6 3.6 0 0 1 7 2.83c1.94 0 3.5 1.65 3.5 3.67A3.57 3.57 0 0 1 7 10.17Zm0-1.84c.97 0 1.75-.81 1.75-1.83S7.97 4.67 7 4.67s-1.75.81-1.75 1.83S6.03 8.33 7 8.33Z" />
+                                </svg>
+                              ) : null}
+
+                              {tagMap[tagId].name}
+                            </a>
+                            <div className="absolute top-full left-1/2 h-4 w-10 -translate-x-1/2" />
+                            {showTagedTooltip?.tagId === tagId &&
+                              showTagedTooltip.questionId === question.id &&
+                              myTooltip(tagId)}
+                          </div>
                         </li>
                       ))}
                     </ul>
@@ -128,6 +198,9 @@ export default function Questions() {
       <div className="ml-6 w-80 flex-none">
         <WatchedTags
           onAdd={(tagId) => setWatchedTags([...watchedTags, tagId])}
+          onRemove={(tagId) =>
+            setWatchedTags(watchedTags.filter((id) => id !== tagId))
+          }
           tagMap={tagMap}
           watchedTags={watchedTags}
         />
