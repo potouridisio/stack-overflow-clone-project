@@ -48,9 +48,16 @@ export default function Questions() {
         <div className="absolute -top-1.5 left-1/2 z-10 -translate-x-1/2">
           <div className="h-0 w-0 border-x-7 border-b-7 border-x-transparent border-b-white" />
         </div>
-        <h1 className="font-bold">{tag.name}</h1>
+        <h1 className="text-xl font-bold">{tag.name}</h1>
         <p>{tag.description}</p>
         <button
+          // onClick={() => {
+          //   if (watchedTags.includes(tagId)) {
+          //     setWatchedTags(watchedTags.filter((id) => id !== tagId));
+          //   } else {
+          //     setWatchedTags([...watchedTags, tagId]);
+          //   }
+          // }}
           className={`mt-4 w-full cursor-pointer rounded p-2 text-sm ${!watchedTags.includes(tagId) ? "bg-blue-500 text-white hover:bg-blue-700 active:bg-blue-900" : "border border-b-neutral-500 text-neutral-500"}`}
           type="button"
         >
